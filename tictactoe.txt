@@ -1,0 +1,206 @@
+#include<iostream>
+#include<cstdlib>
+
+
+using namespace std;
+
+class Game
+{
+    public:
+
+char blank = '_';
+
+char board[9];
+char X = 'X';
+char O = 'O';
+char player = X;
+int mode;
+char c;
+int m;
+
+
+void chooseMode();
+void reset();
+void playerTurn();
+bool isFull();
+void Go();
+void Display();
+bool isWinner(char);
+bool isFree(int);
+void whoGoesFirst();
+void chooseWhoBeX();
+
+
+
+};
+
+
+void Game::playerTurn(){
+
+    if(player== X)
+       player = O;
+     else
+       player = X;
+
+}
+
+bool Game::isFull()
+{
+     for (int i = 0; i< 9; i++){
+
+        if(board[i]== blank)
+
+        return false;
+
+
+
+   }
+return true;
+
+
+}
+
+void Game::Go(){
+
+int m;
+cout << "Enter any number you wish from 1 to 9: ";
+cin >> m;
+
+      if(isFree(m)==true)
+            board[m-1] = player;
+      else {
+        cout << "Invalid Entry!!" << endl;
+        Go();
+}
+}
+void Game::Display(){
+ //system("cls");
+
+for(int i=0; i<9; i++){
+       if(i%3==0) cout << endl;
+
+     cout << board[i] << " | ";
+
+}
+}
+
+bool Game::isWinner(char p){
+
+if(board[0] == p && board[1] == p &&  board[2] == p) return true;
+if(board[3] == p && board[4] == p &&  board[5] == p) return true;
+if(board[6] == p && board[7] == p &&  board[8] == p) return true;
+
+if(board[0] == p && board[3] == p && board[6] == p) return true;
+if(board[1] == p && board[4] == p && board[7] == p) return true;
+if(board[2] == p && board[5] == p && board[8] == p) return true;
+
+if(board[0] == p && board[4] == p && board[8] == p) return true;
+if(board[2] == p && board[4] == p && board[6] == p) return true;
+
+return false;
+}
+
+void Game::reset(){
+
+for(int i=0; i<9; i++){
+
+    board[i] = blank;
+}
+
+}
+
+bool Game::isFree(int m){
+
+
+if(board[m-1]==blank)
+    return true;
+
+return false;
+
+}
+
+void Game::chooseMode(){
+
+cout << "Press 1 to choose Two-Player mode" << endl;
+cout << "Press 2 to play with computer" << endl;
+cin >> mode;
+if(mode==1)
+    cout << "You chose Two-Player mode" << endl;
+else if(mode==2)
+    cout << "You chose to play with computer" << endl;
+else{
+    cout << "Invalid Entry" << endl;
+    chooseMode();
+}
+}
+
+void Game::whoGoesFirst(){
+
+if(mode==1)
+    player=X;
+else if(mode==2){
+
+     cout << "It's your choice to go first or second. In order to go first choose X" << endl;
+    cin >> c;
+if(c=='X'||c=='x'){
+        player=X;
+    cout << "It's your turn. Enter your position for X" << endl;
+}
+else if(c=='O'||c=='o'){
+        player=O;
+    cout << "It's computer's turn" << endl;
+
+}
+    else{
+        cout << "Invalid Entry!" << endl;
+    whoGoesFirst();
+    }
+
+}
+    }
+
+
+
+
+
+
+
+int main(){
+
+Game a;
+
+
+
+   a.reset();
+   a.chooseMode();
+   a.whoGoesFirst();
+   a.Display();
+while(1){
+
+cout << endl;
+
+
+  a.Go();
+   a.Display();
+
+     cout << endl;
+
+     if(a.isWinner(a.X) == true){
+        cout << "\nX Wins!" << endl;
+        break;
+     }
+     else if(a.isWinner(a.O) == true){
+
+            cout << "\nO wins!" << endl;
+            break;
+     }
+     else if(a.isFull()==true){
+        cout << "Draw" << endl;
+        break;
+     }
+   a.playerTurn();
+}
+
+//while(true)
+return 0;
+}
